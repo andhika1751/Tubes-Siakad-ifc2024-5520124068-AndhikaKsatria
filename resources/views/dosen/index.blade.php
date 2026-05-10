@@ -11,10 +11,10 @@
     <table>
         <thead>
             <tr>
-                <th style="width:60px">No</th>
+                <th style="width:55px">No</th>
                 <th>NIDN</th>
                 <th>Nama</th>
-                <th style="width:160px">Aksi</th>
+                <th style="width:185px">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -25,11 +25,12 @@
                 <td>{{ $dosen->nama }}</td>
                 <td>
                     <div class="aksi-cell">
-                        {{-- Hapus: non-aktif --}}
-                        <button type="button" class="btn btn-disabled" disabled>Hapus</button>
-                        {{-- Edit --}}
+                        <form action="{{ route('dosen.destroy', $dosen->nidn) }}" method="POST"
+                              onsubmit="return confirm('Yakin ingin menghapus dosen {{ $dosen->nama }}?')">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </form>
                         <a href="{{ route('dosen.edit', $dosen->nidn) }}" class="btn btn-warning">Edit</a>
-                        {{-- Detail --}}
                         <a href="{{ route('dosen.show', $dosen->nidn) }}" class="btn btn-info">Detail</a>
                     </div>
                 </td>

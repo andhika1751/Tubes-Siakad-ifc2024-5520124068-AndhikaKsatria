@@ -48,7 +48,7 @@ class DosenController extends Controller
 
     public function destroy(Dosen $dosen)
     {
-        // Hapus belum difungsikan
-        return redirect()->route('dosen.index')->with('error', 'Fitur hapus belum tersedia.');
+        $dosen->delete();
+        return redirect()->route('dosen.index')->with('success', 'Data dosen berhasil dihapus!');
     }
 }

@@ -27,7 +27,11 @@
                 <td>{{ $mhs->dosen->nama ?? '-' }}</td>
                 <td>
                     <div class="aksi-cell">
-                        <button type="button" class="btn btn-disabled" disabled>Hapus</button>
+                        <form action="{{ route('mahasiswa.destroy', $mhs->npm) }}" method="POST"
+                              onsubmit="return confirm('Yakin ingin menghapus mahasiswa {{ $mhs->nama }}?')">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </form>
                         <a href="{{ route('mahasiswa.edit', $mhs->npm) }}" class="btn btn-warning">Edit</a>
                         <a href="{{ route('mahasiswa.show', $mhs->npm) }}" class="btn btn-info">Detail</a>
                     </div>

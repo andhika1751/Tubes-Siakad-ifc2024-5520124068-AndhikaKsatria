@@ -31,7 +31,11 @@
                 <td>{{ $krs->matakuliah->sks ?? '-' }}</td>
                 <td>
                     <div class="aksi-cell">
-                        <button type="button" class="btn btn-disabled" disabled>Hapus</button>
+                        <form action="{{ route('krs.destroy', $krs->id) }}" method="POST"
+                              onsubmit="return confirm('Yakin ingin menghapus KRS ini?')">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </form>
                         <a href="{{ route('krs.edit', $krs->id) }}" class="btn btn-warning">Edit</a>
                         <a href="{{ route('krs.show', $krs->id) }}" class="btn btn-info">Detail</a>
                     </div>

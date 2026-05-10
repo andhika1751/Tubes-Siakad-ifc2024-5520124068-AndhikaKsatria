@@ -27,7 +27,11 @@
                 <td>{{ $mk->sks }}</td>
                 <td>
                     <div class="aksi-cell">
-                        <button type="button" class="btn btn-disabled" disabled>Hapus</button>
+                        <form action="{{ route('matakuliah.destroy', $mk->kode_matakuliah) }}" method="POST"
+                              onsubmit="return confirm('Yakin ingin menghapus matakuliah {{ $mk->nama_matakuliah }}?')">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </form>
                         <a href="{{ route('matakuliah.edit', $mk->kode_matakuliah) }}" class="btn btn-warning">Edit</a>
                         <a href="{{ route('matakuliah.show', $mk->kode_matakuliah) }}" class="btn btn-info">Detail</a>
                     </div>

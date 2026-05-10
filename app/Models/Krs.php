@@ -6,7 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Krs extends Model
 {
-    protected $table = 'krs';
+    protected $table      = 'krs';
+    protected $primaryKey = 'id';
+    public    $incrementing = true;
+    protected $keyType    = 'int';
 
     protected $fillable = ['npm', 'kode_matakuliah'];
 

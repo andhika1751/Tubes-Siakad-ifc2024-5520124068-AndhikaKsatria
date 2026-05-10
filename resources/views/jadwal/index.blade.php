@@ -31,7 +31,11 @@
                 <td>{{ \Carbon\Carbon::parse($jadwal->jam)->format('H:i') }}</td>
                 <td>
                     <div class="aksi-cell">
-                        <button type="button" class="btn btn-disabled" disabled>Hapus</button>
+                        <form action="{{ route('jadwal.destroy', $jadwal->id) }}" method="POST"
+                              onsubmit="return confirm('Yakin ingin menghapus jadwal ini?')">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </form>
                         <a href="{{ route('jadwal.edit', $jadwal->id) }}" class="btn btn-warning">Edit</a>
                         <a href="{{ route('jadwal.show', $jadwal->id) }}" class="btn btn-info">Detail</a>
                     </div>

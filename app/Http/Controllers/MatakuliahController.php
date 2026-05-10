@@ -52,6 +52,7 @@ class MatakuliahController extends Controller
 
     public function destroy(Matakuliah $matakuliah)
     {
-        return redirect()->route('matakuliah.index')->with('error', 'Fitur hapus belum tersedia.');
+        $matakuliah->delete();
+        return redirect()->route('matakuliah.index')->with('success', 'Data matakuliah berhasil dihapus!');
     }
 }
