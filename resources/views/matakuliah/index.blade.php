@@ -11,11 +11,11 @@
     <table>
         <thead>
             <tr>
-                <th style="width:60px">No</th>
+                <th style="width:55px">No</th>
                 <th>Kode</th>
                 <th>Nama Matakuliah</th>
-                <th style="width:80px">SKS</th>
-                <th style="width:130px">Aksi</th>
+                <th style="width:70px">SKS</th>
+                <th style="width:185px">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -27,12 +27,9 @@
                 <td>{{ $mk->sks }}</td>
                 <td>
                     <div class="aksi-cell">
-                        <form action="{{ route('matakuliah.destroy', $mk->kode_matakuliah) }}" method="POST"
-                              onsubmit="return confirm('Yakin hapus matakuliah ini?')">
-                            @csrf @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Hapus</button>
-                        </form>
+                        <button type="button" class="btn btn-disabled" disabled>Hapus</button>
                         <a href="{{ route('matakuliah.edit', $mk->kode_matakuliah) }}" class="btn btn-warning">Edit</a>
+                        <a href="{{ route('matakuliah.show', $mk->kode_matakuliah) }}" class="btn btn-info">Detail</a>
                     </div>
                 </td>
             </tr>

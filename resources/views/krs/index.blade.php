@@ -11,13 +11,13 @@
     <table>
         <thead>
             <tr>
-                <th style="width:55px">No</th>
+                <th style="width:50px">No</th>
                 <th>NPM</th>
                 <th>Nama Mahasiswa</th>
                 <th>Kode MK</th>
                 <th>Nama Matakuliah</th>
-                <th style="width:60px">SKS</th>
-                <th style="width:130px">Aksi</th>
+                <th style="width:55px">SKS</th>
+                <th style="width:185px">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -31,12 +31,9 @@
                 <td>{{ $krs->matakuliah->sks ?? '-' }}</td>
                 <td>
                     <div class="aksi-cell">
-                        <form action="{{ route('krs.destroy', $krs->id) }}" method="POST"
-                              onsubmit="return confirm('Yakin hapus KRS ini?')">
-                            @csrf @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Hapus</button>
-                        </form>
+                        <button type="button" class="btn btn-disabled" disabled>Hapus</button>
                         <a href="{{ route('krs.edit', $krs->id) }}" class="btn btn-warning">Edit</a>
+                        <a href="{{ route('krs.show', $krs->id) }}" class="btn btn-info">Detail</a>
                     </div>
                 </td>
             </tr>

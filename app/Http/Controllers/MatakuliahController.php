@@ -25,10 +25,14 @@ class MatakuliahController extends Controller
             'nama_matakuliah' => 'required|string|max:50',
             'sks'             => 'required|integer|min:1|max:6',
         ]);
-
         Matakuliah::create($request->only('kode_matakuliah', 'nama_matakuliah', 'sks'));
-
         return redirect()->route('matakuliah.index')->with('success', 'Data matakuliah berhasil ditambahkan!');
+    }
+
+    public function show(Matakuliah $matakuliah)
+    {
+        $matakuliah->load('jadwals.dosen', 'krs.mahasiswa');
+        return view('matakuliah.show', compact('matakuliah'));
     }
 
     public function edit(Matakuliah $matakuliah)
@@ -42,15 +46,12 @@ class MatakuliahController extends Controller
             'nama_matakuliah' => 'required|string|max:50',
             'sks'             => 'required|integer|min:1|max:6',
         ]);
-
         $matakuliah->update($request->only('nama_matakuliah', 'sks'));
-
         return redirect()->route('matakuliah.index')->with('success', 'Data matakuliah berhasil diperbarui!');
     }
 
     public function destroy(Matakuliah $matakuliah)
     {
-        $matakuliah->delete();
-        return redirect()->route('matakuliah.index')->with('success', 'Data matakuliah berhasil dihapus!');
+        return redirect()->route('matakuliah.index')->with('error', 'Fitur hapus belum tersedia.');
     }
 }

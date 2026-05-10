@@ -14,7 +14,7 @@
                 <th style="width:60px">No</th>
                 <th>NIDN</th>
                 <th>Nama</th>
-                <th style="width:130px">Aksi</th>
+                <th style="width:160px">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -25,12 +25,12 @@
                 <td>{{ $dosen->nama }}</td>
                 <td>
                     <div class="aksi-cell">
-                        <form action="{{ route('dosen.destroy', $dosen->nidn) }}" method="POST"
-                              onsubmit="return confirm('Yakin hapus dosen ini?')">
-                            @csrf @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Hapus</button>
-                        </form>
+                        {{-- Hapus: non-aktif --}}
+                        <button type="button" class="btn btn-disabled" disabled>Hapus</button>
+                        {{-- Edit --}}
                         <a href="{{ route('dosen.edit', $dosen->nidn) }}" class="btn btn-warning">Edit</a>
+                        {{-- Detail --}}
+                        <a href="{{ route('dosen.show', $dosen->nidn) }}" class="btn btn-info">Detail</a>
                     </div>
                 </td>
             </tr>

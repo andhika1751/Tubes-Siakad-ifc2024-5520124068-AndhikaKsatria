@@ -27,10 +27,14 @@ class MahasiswaController extends Controller
             'nidn' => 'required|string|exists:dosen,nidn',
             'nama' => 'required|string|max:50',
         ]);
-
         Mahasiswa::create($request->only('npm', 'nidn', 'nama'));
-
         return redirect()->route('mahasiswa.index')->with('success', 'Data mahasiswa berhasil ditambahkan!');
+    }
+
+    public function show(Mahasiswa $mahasiswa)
+    {
+        $mahasiswa->load('dosen', 'krs.matakuliah');
+        return view('mahasiswa.show', compact('mahasiswa'));
     }
 
     public function edit(Mahasiswa $mahasiswa)
@@ -45,15 +49,12 @@ class MahasiswaController extends Controller
             'nidn' => 'required|string|exists:dosen,nidn',
             'nama' => 'required|string|max:50',
         ]);
-
         $mahasiswa->update($request->only('nidn', 'nama'));
-
         return redirect()->route('mahasiswa.index')->with('success', 'Data mahasiswa berhasil diperbarui!');
     }
 
     public function destroy(Mahasiswa $mahasiswa)
     {
-        $mahasiswa->delete();
-        return redirect()->route('mahasiswa.index')->with('success', 'Data mahasiswa berhasil dihapus!');
+        return redirect()->route('mahasiswa.index')->with('error', 'Fitur hapus belum tersedia.');
     }
 }

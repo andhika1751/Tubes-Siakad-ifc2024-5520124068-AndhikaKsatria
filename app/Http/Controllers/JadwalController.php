@@ -31,10 +31,7 @@ class JadwalController extends Controller
             'hari'            => 'required|string|max:10',
             'jam'             => 'required|date_format:H:i',
         ]);
-
-        // Simpan jam sebagai timestamp hari ini + jam yg dipilih
         $jamTimestamp = now()->format('Y-m-d') . ' ' . $request->jam . ':00';
-
         Jadwal::create([
             'kode_matakuliah' => $request->kode_matakuliah,
             'nidn'            => $request->nidn,
@@ -42,8 +39,13 @@ class JadwalController extends Controller
             'hari'            => $request->hari,
             'jam'             => $jamTimestamp,
         ]);
-
         return redirect()->route('jadwal.index')->with('success', 'Data jadwal berhasil ditambahkan!');
+    }
+
+    public function show(Jadwal $jadwal)
+    {
+        $jadwal->load('matakuliah', 'dosen');
+        return view('jadwal.show', compact('jadwal'));
     }
 
     public function edit(Jadwal $jadwal)
@@ -62,9 +64,7 @@ class JadwalController extends Controller
             'hari'            => 'required|string|max:10',
             'jam'             => 'required|date_format:H:i',
         ]);
-
         $jamTimestamp = now()->format('Y-m-d') . ' ' . $request->jam . ':00';
-
         $jadwal->update([
             'kode_matakuliah' => $request->kode_matakuliah,
             'nidn'            => $request->nidn,
@@ -72,13 +72,11 @@ class JadwalController extends Controller
             'hari'            => $request->hari,
             'jam'             => $jamTimestamp,
         ]);
-
         return redirect()->route('jadwal.index')->with('success', 'Data jadwal berhasil diperbarui!');
     }
 
     public function destroy(Jadwal $jadwal)
     {
-        $jadwal->delete();
-        return redirect()->route('jadwal.index')->with('success', 'Data jadwal berhasil dihapus!');
+        return redirect()->route('jadwal.index')->with('error', 'Fitur hapus belum tersedia.');
     }
 }

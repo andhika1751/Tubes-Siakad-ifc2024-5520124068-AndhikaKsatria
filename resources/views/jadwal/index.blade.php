@@ -11,13 +11,13 @@
     <table>
         <thead>
             <tr>
-                <th style="width:55px">No</th>
+                <th style="width:50px">No</th>
                 <th>Matakuliah</th>
                 <th>Dosen</th>
-                <th style="width:70px">Kelas</th>
-                <th style="width:100px">Hari</th>
-                <th style="width:90px">Jam</th>
-                <th style="width:130px">Aksi</th>
+                <th style="width:65px">Kelas</th>
+                <th style="width:90px">Hari</th>
+                <th style="width:75px">Jam</th>
+                <th style="width:185px">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -31,12 +31,9 @@
                 <td>{{ \Carbon\Carbon::parse($jadwal->jam)->format('H:i') }}</td>
                 <td>
                     <div class="aksi-cell">
-                        <form action="{{ route('jadwal.destroy', $jadwal->id) }}" method="POST"
-                              onsubmit="return confirm('Yakin hapus jadwal ini?')">
-                            @csrf @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Hapus</button>
-                        </form>
+                        <button type="button" class="btn btn-disabled" disabled>Hapus</button>
                         <a href="{{ route('jadwal.edit', $jadwal->id) }}" class="btn btn-warning">Edit</a>
+                        <a href="{{ route('jadwal.show', $jadwal->id) }}" class="btn btn-info">Detail</a>
                     </div>
                 </td>
             </tr>
