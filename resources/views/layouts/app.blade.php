@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'MyBlog')</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', 'SIAKAD')</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; min-height: 100vh; display: flex; flex-direction: column; }
@@ -22,25 +23,31 @@
 </head>
 <body>
 <nav>
-    <a href="/" class="brand">MyBlog</a>
+    <a href="/" class="brand">SIAKAD</a>
+    @auth
     <ul>
-        <li><a href="/" class="{{ request()->is('/') ? 'active' : '' }}">Beranda</a></li>
-        <li><a href="#">Profil</a></li>
-        <li><a href="#">Kontak Kami</a></li>
-        <li><a href="#">Produk Kami</a></li>
-        <li><a href="{{ route('dosen.index') }}"      class="{{ request()->is('dosen*')      ? 'active' : '' }}">Dosen</a></li>
-        <li><a href="{{ route('mahasiswa.index') }}"  class="{{ request()->is('mahasiswa*')  ? 'active' : '' }}">Mahasiswa</a></li>
-        <li><a href="{{ route('matakuliah.index') }}" class="{{ request()->is('matakuliah*') ? 'active' : '' }}">Matakuliah</a></li>
+        @if(auth()->user()->isAdmin())
+            <li><a href="{{ route('dosen.index') }}"      class="{{ request()->is('dosen*')      ? 'active' : '' }}">Dosen</a></li>
+            <li><a href="{{ route('mahasiswa.index') }}"  class="{{ request()->is('mahasiswa*')  ? 'active' : '' }}">Mahasiswa</a></li>
+            <li><a href="{{ route('matakuliah.index') }}" class="{{ request()->is('matakuliah*') ? 'active' : '' }}">Matakuliah</a></li>
+        @endif
         <li><a href="{{ route('jadwal.index') }}"     class="{{ request()->is('jadwal*')     ? 'active' : '' }}">Jadwal</a></li>
         <li><a href="{{ route('krs.index') }}"        class="{{ request()->is('krs*')        ? 'active' : '' }}">KRS</a></li>
     </ul>
+    <form action="{{ route('logout') }}" method="POST" style="margin:0;">
+        @csrf
+        <button type="submit" style="background:none;border:none;color:#fff;cursor:pointer;font-size:0.88rem;font-weight:500;">
+            {{ auth()->user()->name }} (Logout)
+        </button>
+    </form>
+    @endauth
 </nav>
 <main>
     @if(session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
     @if(session('error'))<div class="alert alert-danger">{{ session('error') }}</div>@endif
     @yield('content')
 </main>
-<footer>&copy;copyright 2026 MyBlog</footer>
+<footer>&copy;copyright 2026 SIAKAD</footer>
 @stack('scripts')
 </body>
 </html>

@@ -36,7 +36,7 @@
     /* Form */
     .form-group { margin-bottom: 1.2rem; }
     label { display: block; font-size: 0.85rem; font-weight: 600; color: #333; margin-bottom: 0.35rem; }
-    input[type="text"], input[type="number"], input[type="time"], select {
+    input[type="text"], input[type="number"], input[type="time"], input[type="email"], input[type="password"], select {
         width: 100%; padding: 0.5rem 0.8rem; border: 1px solid #ccc; border-radius: 4px;
         font-size: 0.875rem; color: #333; outline: none; transition: border-color 0.2s;
         background: #fff;

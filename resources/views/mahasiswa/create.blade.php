@@ -28,6 +28,15 @@
             </div>
 
             <div class="form-group">
+                <label for="email">Email Login SIAKAD</label>
+                <input type="email" id="email" name="email" value="{{ old('email') }}"
+                       placeholder="Contoh: andi@gmail.com"
+                       class="{{ $errors->has('email') ? 'is-invalid' : '' }}">
+                <small style="color:#777;">Email ini akan dipakai mahasiswa untuk login. Password default = NPM mahasiswa.</small>
+                @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+
+            <div class="form-group">
                 <label for="nidn">Dosen Wali</label>
                 <select id="nidn" name="nidn" class="{{ $errors->has('nidn') ? 'is-invalid' : '' }}">
                     <option value="">-- Pilih Dosen --</option>

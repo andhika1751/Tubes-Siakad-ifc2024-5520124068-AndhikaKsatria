@@ -9,11 +9,20 @@ use Illuminate\Http\Request;
 
 class JadwalController extends Controller
 {
-    public function index()
-    {
-        $jadwals = Jadwal::with(['matakuliah', 'dosen'])->get();
-        return view('jadwal.index', compact('jadwals'));
-    }
+   public function index(Request $request)
+{
+    $search = $request->search;
+
+    $jadwals = Jadwal::with(['matakuliah','dosen'])
+        ->when($search, function ($q) use ($search) {
+            $q->where('hari', 'like', "%{$search}%")
+              ->orWhere('kelas', 'like', "%{$search}%");
+        })
+        ->paginate(5)
+        ->withQueryString();
+
+    return view('jadwal.index', compact('jadwals'));
+}
 
     public function create()
     {

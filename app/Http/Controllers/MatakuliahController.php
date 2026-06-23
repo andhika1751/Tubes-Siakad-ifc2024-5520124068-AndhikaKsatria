@@ -7,11 +7,19 @@ use Illuminate\Http\Request;
 
 class MatakuliahController extends Controller
 {
-    public function index()
-    {
-        $matakuliahs = Matakuliah::all();
-        return view('matakuliah.index', compact('matakuliahs'));
-    }
+    public function index(Request $request)
+{
+    $search = $request->search;
+
+    $matakuliahs = Matakuliah::when($search, function ($q) use ($search) {
+        $q->where('kode_matakuliah', 'like', "%{$search}%")
+          ->orWhere('nama_matakuliah', 'like', "%{$search}%");
+    })
+    ->paginate(5)
+    ->withQueryString();
+
+    return view('matakuliah.index', compact('matakuliahs'));
+}
 
     public function create()
     {

@@ -22,7 +22,27 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'npm',
     ];
+
+    /**
+     * Relasi ke data mahasiswa (hanya terisi jika role = mahasiswa).
+     */
+    public function mahasiswa()
+    {
+        return $this->belongsTo(Mahasiswa::class, 'npm', 'npm');
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isMahasiswa(): bool
+    {
+        return $this->role === 'mahasiswa';
+    }
 
     /**
      * The attributes that should be hidden for serialization.

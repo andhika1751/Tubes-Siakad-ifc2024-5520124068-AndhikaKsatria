@@ -7,11 +7,19 @@ use Illuminate\Http\Request;
 
 class DosenController extends Controller
 {
-    public function index()
-    {
-        $dosens = Dosen::all();
-        return view('dosen.index', compact('dosens'));
-    }
+    public function index(Request $request)
+{
+    $search = $request->search;
+
+    $dosens = Dosen::when($search, function ($q) use ($search) {
+        $q->where('nidn', 'like', "%{$search}%")
+          ->orWhere('nama', 'like', "%{$search}%");
+    })
+    ->paginate(5)
+    ->withQueryString();
+
+    return view('dosen.index', compact('dosens'));
+}
 
     public function create()
     {

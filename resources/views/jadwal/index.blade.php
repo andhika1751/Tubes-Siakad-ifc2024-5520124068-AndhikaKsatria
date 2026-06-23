@@ -5,7 +5,17 @@
 @section('content')
 <h1 class="page-title">Halaman Jadwal</h1>
 <a href="{{ route('jadwal.create') }}" class="btn btn-primary mb-4">Tambah Data</a>
+<form method="GET" action="{{ route('jadwal.index') }}" class="mb-3">
+    <input type="text"
+           name="search"
+           value="{{ request('search') }}"
+           placeholder="Cari jadwal..."
+           style="padding:8px;width:250px;">
 
+    <button type="submit" class="btn btn-primary">
+        Cari
+    </button>
+</form>
 <div class="card">
     <div class="card-header">Daftar Jadwal</div>
     <table>
@@ -23,7 +33,7 @@
         <tbody>
             @forelse($jadwals as $i => $jadwal)
             <tr>
-                <td>{{ $i + 1 }}</td>
+                <td>{{ $jadwals->firstItem() + $i }}</td>
                 <td>{{ $jadwal->matakuliah->nama_matakuliah ?? $jadwal->kode_matakuliah }}</td>
                 <td>{{ $jadwal->dosen->nama ?? $jadwal->nidn }}</td>
                 <td>{{ $jadwal->kelas }}</td>
@@ -46,5 +56,8 @@
             @endforelse
         </tbody>
     </table>
+</div>
+<div style="margin-top:20px">
+    {{ $jadwals->links() }}
 </div>
 @endsection

@@ -5,7 +5,17 @@
 @section('content')
 <h1 class="page-title">Halaman Dosen</h1>
 <a href="{{ route('dosen.create') }}" class="btn btn-primary mb-4">Tambah Data</a>
+<form method="GET" action="{{ route('dosen.index') }}" class="mb-3">
+    <input type="text"
+           name="search"
+           value="{{ request('search') }}"
+           placeholder="Cari dosen..."
+           style="padding:8px;width:250px;">
 
+    <button type="submit" class="btn btn-primary">
+        Cari
+    </button>
+</form>
 <div class="card">
     <div class="card-header">Daftar Dosen</div>
     <table>
@@ -20,7 +30,7 @@
         <tbody>
             @forelse($dosens as $i => $dosen)
             <tr>
-                <td>{{ $i + 1 }}</td>
+                <td>{{ $dosens->firstItem() + $i }}</td>
                 <td>{{ $dosen->nidn }}</td>
                 <td>{{ $dosen->nama }}</td>
                 <td>
@@ -40,5 +50,8 @@
             @endforelse
         </tbody>
     </table>
+</div>
+<div style="margin-top:20px">
+    {{ $dosens->links() }}
 </div>
 @endsection
