@@ -1,59 +1,115 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SIAKAD Sederhana — Tugas Besar Web II (IF53413)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi web Sistem Informasi Akademik (SIAKAD) sederhana berbasis **Laravel**, dibuat untuk memenuhi Tugas Besar Mata Kuliah Web II. Aplikasi ini digunakan untuk mengelola data Dosen, Mahasiswa, Mata Kuliah, Jadwal Perkuliahan, dan Kartu Rencana Studi (KRS), dengan dua peran pengguna: **Admin** dan **Mahasiswa**.
 
-## About Laravel
+## 📋 Deskripsi Aplikasi
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+SIAKAD ini mensimulasikan proses akademik kampus secara sederhana:
+- **Admin** mengelola seluruh data master (Dosen, Mahasiswa, Mata Kuliah, Jadwal) dan dapat memantau seluruh KRS mahasiswa.
+- **Mahasiswa** dapat melihat jadwal kuliah dan mengelola KRS miliknya sendiri (mengambil & drop mata kuliah).
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Setiap data mahasiswa yang dibuat oleh Admin otomatis akan memiliki akun login tersendiri untuk mengakses sistem.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🛠️ Teknologi yang Digunakan
 
-## Learning Laravel
+- **Laravel 12** (PHP Framework)
+- **Laravel Breeze** (Authentication scaffolding)
+- **Blade Templating Engine**
+- **MySQL** (Database)
+- **Tailwind CSS** & CSS custom (untuk halaman CRUD)
+- **Eloquent ORM** & **Eloquent Relationship**
+- **Middleware** custom untuk Role-Based Access Control
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## 👥 Role & Hak Akses
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Role | Hak Akses |
+|---|---|
+| **Admin** | Kelola penuh data Dosen, Mahasiswa, Mata Kuliah, dan Jadwal (CRUD). Dapat melihat seluruh data KRS mahasiswa. |
+| **Mahasiswa** | Hanya dapat melihat Jadwal Perkuliahan dan mengelola KRS miliknya sendiri (tambah/drop mata kuliah). Tidak dapat mengakses halaman kelola Dosen, Mahasiswa, dan Mata Kuliah. |
 
-## Laravel Sponsors
+> Pendaftaran akun dilakukan **oleh Admin**, bukan registrasi mandiri. Saat Admin menambahkan data mahasiswa baru, sistem otomatis membuatkan akun login untuk mahasiswa tersebut (password default = NPM mahasiswa, dapat diganti kemudian oleh mahasiswa).
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🗂️ Penjelasan Fungsi Halaman
 
-### Premium Partners
+### Halaman Autentikasi
+| Halaman | Fungsi |
+|---|---|
+| `Login` | Halaman masuk untuk Admin & Mahasiswa menggunakan email dan password. |
+| `Logout` | Mengakhiri sesi login pengguna. |
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Halaman Admin
+| Halaman | Fungsi |
+|---|---|
+| `Data Dosen` | Menampilkan, menambah, mengubah, dan menghapus data dosen. |
+| `Data Mahasiswa` | Menampilkan, menambah, mengubah, dan menghapus data mahasiswa, termasuk pengaturan email login dan dosen wali. Menambah data mahasiswa otomatis membuat akun login mahasiswa. |
+| `Data Mata Kuliah` | Menampilkan, menambah, mengubah, dan menghapus data mata kuliah beserta jumlah SKS. |
+| `Data Jadwal` | Menampilkan, menambah, mengubah, dan menghapus jadwal perkuliahan (dosen pengajar, hari, jam, dan kelas). |
+| `Data KRS` | Menampilkan seluruh KRS yang diambil oleh mahasiswa (mode lihat saja, dilengkapi fitur pencarian). |
 
-## Contributing
+### Halaman Mahasiswa
+| Halaman | Fungsi |
+|---|---|
+| `Jadwal Perkuliahan` | Melihat daftar jadwal kuliah yang tersedia. |
+| `KRS Saya` | Melihat daftar mata kuliah yang sudah diambil, mengambil mata kuliah baru, dan men-drop mata kuliah yang sudah diambil. Dilengkapi fitur pencarian & pagination. |
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 🔗 Relasi Antar Tabel (Eloquent Relationship)
 
-## Code of Conduct
+- `Dosen` **hasMany** `Mahasiswa` (sebagai dosen wali) & `Jadwal`
+- `Mahasiswa` **belongsTo** `Dosen`, **hasMany** `Krs`, **hasOne** `User` (akun login)
+- `Matakuliah` **hasMany** `Jadwal` & `Krs`
+- `Jadwal` **belongsTo** `Dosen` & `Matakuliah`
+- `Krs` **belongsTo** `Mahasiswa` & `Matakuliah`
+- `User` **belongsTo** `Mahasiswa` (melalui kolom `npm`)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## ⚙️ Instalasi & Menjalankan Aplikasi
 
-## Security Vulnerabilities
+```bash
+# 1. Clone repository
+git clone <url-repo-ini>
+cd <nama-folder-project>
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# 2. Install dependency PHP & JS
+composer install
+npm install && npm run build
 
-## License
+# 3. Konfigurasi environment
+cp .env.example .env
+php artisan key:generate
+# sesuaikan koneksi database di file .env
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# 4. Jalankan migration & seeder
+php artisan migrate --seed
+
+# 5. Jalankan server
+php artisan serve
+```
+
+Aplikasi dapat diakses di `http://127.0.0.1:8000`.
+
+## 🔑 Akun Default (dari Seeder)
+
+| Role | Email | Password |
+|---|---|---|
+| Admin | `admin@siakad.test` | `password` |
+| Mahasiswa (contoh) | `{npm}@siakad.test` | `{npm}` |
+
+## 🖼️ Screenshots
+
+Seluruh tangkapan layar (screenshot) setiap halaman aplikasi tersedia di folder [`screenshots/`](./screenshots).
+
+## ✨ Fitur Tambahan (Bonus)
+
+- ✅ Pencarian & filter data pada halaman KRS
+- ⬜ Export KRS ke PDF/Excel
+- ⬜ Dashboard statistik
+
+## 🌐 Link Hosting
+
+> _(isi dengan link deploy aplikasi setelah dihosting, contoh: https://siakad-tubes.up.railway.app)_
+
+## 👤 Identitas Mahasiswa
+
+- **Nama**: _(isi nama lengkap)_
+- **NPM**: _(isi NPM)_
+- **Kelas**: _(isi kelas)_
+- **Mata Kuliah**: Web II (IF53413)

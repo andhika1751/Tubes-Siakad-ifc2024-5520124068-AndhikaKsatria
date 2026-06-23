@@ -23,7 +23,13 @@
 </div>
 
 <div class="btn-group" style="margin-top:1.5rem">
-    <a href="{{ route('krs.edit', $krs->id) }}" class="btn btn-warning">Edit</a>
+    @if(auth()->user()->isMahasiswa() && $krs->npm === auth()->user()->npm)
+    <form action="{{ route('krs.destroy', $krs->id) }}" method="POST"
+          onsubmit="return confirm('Yakin ingin drop matakuliah ini?')">
+        @csrf @method('DELETE')
+        <button type="submit" class="btn btn-danger">Drop Mata Kuliah</button>
+    </form>
+    @endif
     <a href="{{ route('krs.index') }}" class="btn btn-secondary">Kembali</a>
 </div>
 @endsection
