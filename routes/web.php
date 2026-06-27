@@ -5,6 +5,7 @@ use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MatakuliahController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\KrsController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,10 +15,8 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
 
-    // Dashboard: arahkan otomatis sesuai role setelah login
-    Route::get('/dashboard', function () {
-        return redirect()->route(auth()->user()->isAdmin() ? 'dosen.index' : 'jadwal.index');
-    })->name('dashboard');
+    // Dashboard statistic (beda tampilan untuk admin & mahasiswa)
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Profile (bawaan Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -33,7 +32,6 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('dosen',      DosenController::class);
         Route::resource('mahasiswa',  MahasiswaController::class);
         Route::resource('matakuliah', MatakuliahController::class);
-        // Admin: kelola jadwal penuh (tambah/edit/hapus), index & show dipisah di bawah
         Route::resource('jadwal', JadwalController::class)->except(['index', 'show']);
     });
 
@@ -48,13 +46,13 @@ Route::middleware(['auth'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | ADMIN & MAHASISWA: lihat KRS
-    | (Admin lihat KRS semua mahasiswa, mahasiswa hanya lihat KRS miliknya
-    | sendiri — logika filter ada di KrsController)
+    | ADMIN & MAHASISWA: lihat & export KRS
     |--------------------------------------------------------------------------
     */
     Route::middleware('role:admin,mahasiswa')->group(function () {
         Route::resource('krs', KrsController::class)->only(['index', 'show']);
+        Route::get('/krs-export/pdf',   [KrsController::class, 'exportPdf'])->name('krs.export.pdf');
+        Route::get('/krs-export/excel', [KrsController::class, 'exportExcel'])->name('krs.export.excel');
     });
 
     /*

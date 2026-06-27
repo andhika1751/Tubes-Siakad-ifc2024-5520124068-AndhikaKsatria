@@ -23,9 +23,10 @@
 </head>
 <body>
 <nav>
-    <a href="/" class="brand">SIAKAD</a>
+    <a href="{{ route('dashboard') }}" class="brand">SIAKAD</a>
     @auth
     <ul>
+        <li><a href="{{ route('dashboard') }}" class="{{ request()->is('dashboard') ? 'active' : '' }}">Dashboard</a></li>
         @if(auth()->user()->isAdmin())
             <li><a href="{{ route('dosen.index') }}"      class="{{ request()->is('dosen*')      ? 'active' : '' }}">Dosen</a></li>
             <li><a href="{{ route('mahasiswa.index') }}"  class="{{ request()->is('mahasiswa*')  ? 'active' : '' }}">Mahasiswa</a></li>

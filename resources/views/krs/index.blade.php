@@ -5,9 +5,13 @@
 @section('content')
 <h1 class="page-title">Halaman KRS</h1>
 
-@if(auth()->user()->isMahasiswa())
-<a href="{{ route('krs.create') }}" class="btn btn-primary mb-4">Ambil Mata Kuliah</a>
-@endif
+<div class="mb-4" style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+    @if(auth()->user()->isMahasiswa())
+    <a href="{{ route('krs.create') }}" class="btn btn-primary">Ambil Mata Kuliah</a>
+    @endif
+    <a href="{{ route('krs.export.pdf') }}" class="btn btn-danger">Export PDF</a>
+    <a href="{{ route('krs.export.excel') }}" class="btn btn-success">Export Excel</a>
+</div>
 
 <form method="GET" action="{{ route('krs.index') }}" class="mb-3">
     <input type="text"
@@ -20,6 +24,7 @@
         Cari
     </button>
 </form>
+
 <div class="card">
     <div class="card-header">Daftar KRS</div>
     <table>

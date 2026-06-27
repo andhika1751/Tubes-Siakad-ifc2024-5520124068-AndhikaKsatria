@@ -2,28 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\KrsExport;
 use App\Models\Krs;
 use App\Models\Matakuliah;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
 
 class KrsController extends Controller
 {
     /**
-     * Admin: lihat KRS semua mahasiswa (bisa cari berdasarkan npm/kode matakuliah).
-     * Mahasiswa: hanya lihat KRS miliknya sendiri (bisa cari di dalam KRS miliknya).
+     * Query dasar KRS sesuai role yang login:
+     * - Admin    : semua data KRS
+     * - Mahasiswa: hanya KRS miliknya sendiri
      */
-    public function index(Request $request)
+    private function baseQuery(Request $request)
     {
-        $search = $request->search;
-
         $query = Krs::with(['mahasiswa', 'matakuliah']);
 
-        // Mahasiswa hanya boleh melihat KRS miliknya sendiri
         if ($request->user()->isMahasiswa()) {
             $query->where('npm', $request->user()->npm);
         }
 
-        $krsList = $query
+        return $query;
+    }
+
+    public function index(Request $request)
+    {
+        $search = $request->search;
+
+        $krsList = $this->baseQuery($request)
             ->when($search, function ($q) use ($search) {
                 $q->where('npm', 'like', "%{$search}%")
                   ->orWhere('kode_matakuliah', 'like', "%{$search}%");
@@ -44,7 +52,7 @@ class KrsController extends Controller
     }
 
     /**
-     * Khusus mahasiswa: simpan KRS untuk npm miliknya sendiri (tidak bisa pilih npm lain).
+     * Khusus mahasiswa: simpan KRS untuk npm miliknya sendiri.
      */
     public function store(Request $request)
     {
@@ -70,7 +78,7 @@ class KrsController extends Controller
 
     /**
      * Admin: lihat detail KRS siapa saja.
-     * Mahasiswa: hanya lihat detail KRS miliknya sendiri (403 jika bukan miliknya).
+     * Mahasiswa: hanya lihat detail KRS miliknya sendiri.
      */
     public function show(Request $request, $id)
     {
@@ -96,5 +104,24 @@ class KrsController extends Controller
 
         $krs->delete();
         return redirect()->route('krs.index')->with('success', 'Mata kuliah berhasil di-drop!');
+    }
+
+    /**
+     * Export KRS ke PDF. Admin export semua data, mahasiswa export miliknya saja.
+     */
+    public function exportPdf(Request $request)
+    {
+        $krsList = $this->baseQuery($request)->get();
+        $pdf = Pdf::loadView('krs.pdf', compact('krsList'));
+        return $pdf->download('data-krs-'.now()->format('Ymd-His').'.pdf');
+    }
+
+    /**
+     * Export KRS ke Excel. Admin export semua data, mahasiswa export miliknya saja.
+     */
+    public function exportExcel(Request $request)
+    {
+        $krsList = $this->baseQuery($request)->get();
+        return Excel::download(new KrsExport($krsList), 'data-krs-'.now()->format('Ymd-His').'.xlsx');
     }
 }
